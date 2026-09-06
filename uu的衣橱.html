@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>衣橱 · 2400件品牌单品 · 裙装裤装筛选</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 250, 246, 0.42);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 40px rgba(120, 70, 40, 0.08);
+            --glass-blur: blur(16px);
+            --text: #4a3028;
+            --text-light: #6b5044;
+            --accent: #c47a6a;
+            --accent-light: #e8b8aa;
+            --chip-bg: rgba(255, 252, 249, 0.5);
+            --chip-hover: rgba(255, 245, 238, 0.7);
+            --chip-sel: rgba(255, 238, 228, 0.8);
+            --gold: #b8946e;
+            --radius: 18px;
+            --radius-sm: 10px;
+            --filter-active-bg: rgba(220, 150, 130, 0.55);
+            --filter-active-text: #fff;
+            --filter-idle-bg: rgba(255, 255, 255, 0.35);
+            --filter-idle-text: #6b5044;
+            --copy-btn-bg: rgba(255, 255, 255, 0.5);
+            --copy-btn-hover: rgba(255, 245, 238, 0.75);
+            --copy-btn-active: #d4958b;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background:
+                radial-gradient(ellipse at 18% 22%, rgba(255, 210, 180, 0.45) 0%, transparent 55%),
+                radial-gradient(ellipse at 76% 18%, rgba(230, 190, 210, 0.4) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 80%, rgba(255, 235, 210, 0.5) 0%, transparent 55%),
+                radial-gradient(ellipse at 28% 62%, rgba(240, 200, 180, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 72% 50%, rgba(250, 220, 200, 0.35) 0%, transparent 50%),
+                linear-gradient(170deg, #fef7f2 0%, #fdf2e8 25%, #fefaf5 50%, #fdf4eb 75%, #fef7f1 100%);
+            background-attachment: fixed;
+        }
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::before {
+            top: -130px;
+            left: -120px;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(255, 190, 150, 0.3) 0%, transparent 70%);
+            animation: orb1 15s ease-in-out infinite;
+        }
+        body::after {
+            bottom: -110px;
+            right: -110px;
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, rgba(210, 180, 200, 0.28) 0%, transparent 70%);
+            animation: orb2 19s ease-in-out infinite;
+        }
+        @keyframes orb1 {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(50px, -35px) scale(1.15);
+            }
+            66% {
+                transform: translate(-30px, 45px) scale(0.9);
+            }
+        }
+        @keyframes orb2 {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(-45px, -30px) scale(1.2);
+            }
+            66% {
+                transform: translate(35px, -55px) scale(0.85);
+            }
+        }
+
+        .wardrobe {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 620px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 26px;
+            border: 1.5px solid var(--glass-border);
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+        .wardrobe-top {
+            background: rgba(190, 140, 110, 0.32);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .wardrobe-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .wardrobe-title .icon {
+            font-size: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        .wardrobe-subtitle {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 1.5px;
+            margin-top: 3px;
+        }
+
+        .stats-mini {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            padding: 10px 16px;
+            background: rgba(255, 252, 248, 0.35);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            flex-wrap: wrap;
+        }
+        .stat-dot {
+            font-size: 11px;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+        .stat-dot .num {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 15px;
+        }
+
+        /* 筛选标签栏 */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 16px 6px;
+            flex-wrap: wrap;
+        }
+        .filter-tag {
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            transition: all 0.25s;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            font-family: inherit;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            background: var(--filter-idle-bg);
+            color: var(--filter-idle-text);
+        }
+        .filter-tag:hover {
+            background: rgba(255, 245, 238, 0.6);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(160, 100, 60, 0.15);
+        }
+        .filter-tag.active {
+            background: var(--filter-active-bg);
+            color: var(--filter-active-text);
+            border-color: rgba(255, 220, 200, 0.6);
+            box-shadow: 0 4px 18px rgba(180, 110, 80, 0.35);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+        }
+        .filter-tag:active {
+            transform: scale(0.93);
+            transition: transform 0.08s;
+        }
+
+        .wardrobe-body {
+            padding: 12px 14px;
+            max-height: 430px;
+            overflow-y: auto;
+            background: rgba(255, 252, 249, 0.15);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .wardrobe-body::-webkit-scrollbar {
+            width: 5px;
+        }
+        .wardrobe-body::-webkit-scrollbar-thumb {
+            background: rgba(180, 150, 130, 0.3);
+            border-radius: 10px;
+        }
+
+        .category {
+            margin-bottom: 10px;
+        }
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            cursor: pointer;
+            transition: all 0.25s;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: var(--text);
+        }
+        .category-header:hover {
+            background: rgba(255, 245, 238, 0.55);
+        }
+        .category-header .cat-icon {
+            font-size: 18px;
+        }
+        .category-header .cat-count {
+            font-size: 10px;
+            background: rgba(200, 150, 130, 0.2);
+            color: var(--accent);
+            padding: 3px 9px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .category-header .arrow {
+            margin-left: auto;
+            transition: transform 0.25s;
+            font-size: 14px;
+            color: #8b6f64;
+        }
+        .category-header.open .arrow {
+            transform: rotate(90deg);
+        }
+
+        .items-container {
+            display: none;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+            padding: 4px 2px;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+        .items-container.open {
+            display: flex;
+        }
+        .items-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .items-container::-webkit-scrollbar-thumb {
+            background: rgba(180, 150, 130, 0.3);
+            border-radius: 8px;
+        }
+
+        .item-chip {
+            background: var(--chip-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-sm);
+            padding: 6px 9px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            color: var(--text);
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            font-family: inherit;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .item-chip:hover {
+            background: var(--chip-hover);
+            border-color: rgba(200, 160, 130, 0.5);
+            transform: translateY(-1px);
+        }
+        .item-chip.selected {
+            background: var(--chip-sel);
+            border-color: rgba(200, 120, 100, 0.7);
+            box-shadow: 0 0 0 3px rgba(200, 130, 110, 0.3), 0 4px 20px rgba(180, 100, 70, 0.3);
+            font-weight: 700;
+            color: #9b3a2a;
+            z-index: 2;
+        }
+        .item-chip .check-dot {
+            display: inline-block;
+            width: 0;
+            opacity: 0;
+            transition: all 0.2s;
+            color: #c47a6a;
+            font-weight: 700;
+            overflow: hidden;
+        }
+        .item-chip.selected .check-dot {
+            width: 14px;
+            opacity: 1;
+            margin-left: 2px;
+        }
+
+        .outfit-preview {
+            background: rgba(255, 252, 248, 0.45);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 20px;
+            padding: 16px;
+            margin: 10px 14px;
+            border: 1.5px dashed rgba(200, 170, 140, 0.5);
+            text-align: center;
+            min-height: 75px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.35s;
+        }
+        .outfit-preview.complete {
+            border-style: solid;
+            border-color: rgba(190, 150, 120, 0.55);
+            background: rgba(255, 250, 245, 0.6);
+            box-shadow: 0 4px 24px rgba(160, 110, 80, 0.1);
+        }
+        .outfit-hint {
+            color: #b89a85;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+        .outfit-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+        }
+        .outfit-tag {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 14px;
+            padding: 6px 13px;
+            font-weight: 600;
+            font-size: 11px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: slideUp 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 0.4px;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .outfit-tag.tag-top {
+            border-left: 4px solid #e0a080;
+        }
+        .outfit-tag.tag-bottom {
+            border-left: 4px solid #88b0c0;
+        }
+        .outfit-tag.tag-acc {
+            border-left: 4px solid #c8a060;
+        }
+        .outfit-plus {
+            color: #b89580;
+            font-size: 13px;
+        }
+        .outfit-badge {
+            font-size: 10px;
+            color: #b0907a;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .description-box {
+            position: relative;
+            background: rgba(255, 252, 249, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 13px 40px 13px 15px;
+            margin: 4px 14px 10px;
+            font-size: 12px;
+            line-height: 1.7;
+            color: #4a3028;
+            letter-spacing: 0.5px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+        }
+        .desc-text {
+            width: 100%;
+            font-weight: 500;
+        }
+        .desc-empty {
+            color: #b89a85;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* 复制按钮 */
+        .copy-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: var(--copy-btn-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.22s;
+            color: #8b6f64;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: inherit;
+            z-index: 5;
+        }
+        .copy-btn:hover {
+            background: var(--copy-btn-hover);
+            color: var(--accent);
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 2px 10px rgba(180, 100, 60, 0.15);
+        }
+        .copy-btn:active {
+            transform: translateY(-50%) scale(0.9);
+            background: var(--copy-btn-active);
+            color: #fff;
+            transition: all 0.08s;
+        }
+        .copy-btn.copied {
+            background: #c47a6a;
+            color: #fff;
+            border-color: #c47a6a;
+            animation: copyPop 0.4s ease-out;
+        }
+        @keyframes copyPop {
+            0% {
+                transform: translateY(-50%) scale(0.8);
+            }
+            40% {
+                transform: translateY(-50%) scale(1.15);
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            padding: 8px 14px 14px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            flex: 1;
+            min-width: 55px;
+            padding: 10px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.22s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .btn:active {
+            transform: scale(0.92);
+        }
+        .btn-shuffle {
+            background: rgba(220, 150, 130, 0.48);
+            color: #fff;
+            box-shadow: 0 3px 16px rgba(180, 110, 80, 0.3);
+        }
+        .btn-shuffle:hover {
+            box-shadow: 0 5px 22px rgba(180, 110, 80, 0.45);
+            transform: translateY(-2px);
+        }
+        .btn-save {
+            background: rgba(255, 255, 255, 0.5);
+            color: #c47a6a;
+            border-color: rgba(220, 180, 160, 0.5);
+        }
+        .btn-save:hover {
+            background: rgba(255, 245, 238, 0.7);
+            border-color: rgba(200, 140, 110, 0.6);
+            transform: translateY(-2px);
+        }
+        .btn-clear {
+            background: rgba(255, 255, 255, 0.45);
+            color: #7a6055;
+            border-color: rgba(200, 185, 170, 0.5);
+        }
+        .btn-clear:hover {
+            background: rgba(250, 245, 238, 0.65);
+            border-color: rgba(180, 160, 140, 0.6);
+            transform: translateY(-2px);
+        }
+        .btn-heart-pop {
+            animation: heartPop 0.5s ease-out;
+            color: #d07060;
+        }
+        @keyframes heartPop {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(1.5);
+                color: #d07060;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .fav-section {
+            margin: 4px 14px 14px;
+            background: rgba(255, 252, 248, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 10px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-height: 140px;
+            overflow-y: auto;
+        }
+        .fav-section::-webkit-scrollbar {
+            width: 4px;
+        }
+        .fav-section::-webkit-scrollbar-thumb {
+            background: rgba(180, 150, 130, 0.35);
+            border-radius: 8px;
+        }
+        .fav-header {
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text);
+        }
+        .fav-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .fav-chip {
+            background: rgba(255, 252, 248, 0.5);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 5px 8px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .fav-chip:hover {
+            background: rgba(255, 245, 238, 0.7);
+            border-color: rgba(190, 150, 120, 0.5);
+        }
+        .fav-chip .fav-del {
+            cursor: pointer;
+            color: #b89585;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 1px 3px;
+            border-radius: 50%;
+        }
+        .fav-chip .fav-del:hover {
+            color: #d07060;
+            background: rgba(255, 230, 220, 0.6);
+        }
+        .no-fav {
+            color: #b89a85;
+            font-size: 10px;
+            text-align: center;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .toast-mini {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: rgba(80, 50, 35, 0.85);
+            backdrop-filter: blur(16px);
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1px;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .toast-mini.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 420px) {
+            .wardrobe {
+                border-radius: 20px;
+            }
+            .item-chip {
+                font-size: 9px;
+                padding: 4px 7px;
+            }
+            .btn {
+                font-size: 10px;
+                padding: 8px 7px;
+            }
+            .wardrobe-body {
+                max-height: 340px;
+            }
+            .filter-tag {
+                font-size: 10px;
+                padding: 6px 13px;
+            }
+            .filter-bar {
+                gap: 6px;
+                padding: 8px 10px 4px;
+            }
+            .description-box {
+                padding-right: 36px;
+            }
+            .copy-btn {
+                width: 26px;
+                height: 26px;
+                right: 5px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wardrobe" id="wardrobeApp">
+        <div class="wardrobe-top">
+            <div class="wardrobe-title"><span class="icon">🚪</span> 我的品牌衣橱</div>
+            <div class="wardrobe-subtitle">2400件单品 · 裙装/裤装一键筛选</div>
+        </div>
+        <div class="stats-mini">
+            <span class="stat-dot">👗 搭配库 <span class="num">6400万</span>套</span>
+            <span class="stat-dot">💖 已收藏 <span class="num" id="favNum">0</span>套</span>
+            <span class="stat-dot">🎯 今日 <span class="num" id="todayNum">0</span>套</span>
+        </div>
+
+        <div class="filter-bar" id="filterBar">
+            <button class="filter-tag active" data-filter="neutral" onclick="setFilter('neutral')">🔄 中性</button>
+            <button class="filter-tag" data-filter="skirt" onclick="setFilter('skirt')">👗 裙装</button>
+            <button class="filter-tag" data-filter="pants" onclick="setFilter('pants')">👖 裤装</button>
+        </div>
+
+        <div class="outfit-preview" id="outfitPreview"><span class="outfit-hint">点击下方分类展开挑选单品</span></div>
+        <div class="description-box" id="descriptionBox">
+            <span class="desc-empty">选择上衣、下衣和配饰后，这里会出现一段搭配描写</span>
+            <button class="copy-btn" id="copyBtn" onclick="copyDescription()" title="复制搭配描写">📋</button>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-shuffle" onclick="shuffleOutfit()">🎲 摇搭配</button>
+            <button class="btn btn-save" id="btnSave" onclick="saveFav()">💾 收藏</button>
+            <button class="btn btn-clear" onclick="clearAll()">🔄 清空</button>
+        </div>
+        <div class="wardrobe-body" id="wardrobeBody"></div>
+        <div class="fav-section">
+            <div class="fav-header">💝 我的收藏 <span id="favCountLabel">(0套)</span></div>
+            <div class="fav-list" id="favList"><span class="no-fav">还没有收藏搭配哦</span></div>
+        </div>
+    </div>
+    <div class="toast-mini" id="toastMini"></div>
+    <script>
+        (function() {
+            const BRANDS = ['Gucci', 'Prada', 'Chanel', 'Dior', 'Louis Vuitton', 'Hermès', 'Burberry', 'Balenciaga',
+                'Off-White', 'Supreme', 'Nike', 'Adidas', 'Zara', 'H&M', 'Uniqlo', 'COS', 'Mango', 'The Row', 'Toteme',
+                'Acne Studios', 'Isabel Marant', 'Ganni', 'Reformation', 'Rouje', 'Sezane', 'Aritzia', 'Everlane',
+                'Theory', 'Rag & Bone', 'Levi\'s', 'Diesel', 'Tommy Hilfiger', 'Calvin Klein', 'Ralph Lauren', 'Coach',
+                'Fendi', 'Valentino', 'Bottega Veneta', 'Celine', 'Loewe', 'Miu Miu', 'Versace', 'Givenchy',
+                'Alexander McQueen', 'Balmain', 'Stella McCartney', 'Moncler', 'Canada Goose', 'Patagonia', 'Carhartt'
+            ];
+            const COLORS = ['黑', '白', '奶油白', '米白', '灰', '碳黑', '海军蓝', '浅蓝', '雾霾蓝', '藏蓝', '酒红', '砖红', '豆沙红', '蜜桃粉', '樱花粉',
+                '薰衣草紫', '香芋紫', '牛油果绿', '薄荷绿', '墨绿', '橄榄绿', '焦糖棕', '驼色', '卡其', '燕麦色', '鹅黄', '橘色', '银色', '金色', '透明'
+            ];
+
+            const TOP_STYLES = ['针织衫', 'T恤', '衬衫', '卫衣', '毛衣', '吊带', '开衫', 'POLO衫', '高领衫', '雪纺衫', '蕾丝衫', '背心', '打底衫', '丝绒上衣',
+                '连帽卫衣', '泡泡袖上衣', '镂空衫', '海军衫', '薄款毛衣', '短款针织', '复古衬衫', '印花T恤', '条纹上衣', '格纹衬衫', '牛仔衬衫', '皮质上衣', '珠片上衣',
+                '羽毛上衣', '荷叶边上衣', '灯笼袖上衣'
+            ];
+            const BOTTOM_STYLES = ['牛仔裤', '百褶裙', '工装裤', 'A字裙', '西装裤', '阔腿裤', '短裤', '半身裙', '休闲裤', '小皮裙', '牛仔短裙', '工装短裤', '灯芯绒裤',
+                '运动裤', '丝绒半裙', '百慕大短裤', '针织长裙', '微喇裤', '破洞牛仔', '伞裙', '铅笔裙', '鱼尾裙', '直筒裤', '烟管裤', '喇叭裤', '骑行裤', '连体裤',
+                '背带裤', '花苞裙', '纱裙'
+            ];
+            const ACC_STYLES = ['耳钉', '发箍', '项链', '胸针', '发带', '耳环', '方巾', '腰链', '手链', '发夹', 'choker', '戒指', '手绳', '发圈', '眼镜',
+                '丝巾', '帽子', '手套', '领带', '腰带', '手镯', '脚链', '头巾', '领结', '胸花', '挂饰', '手机壳', '包挂', '钥匙扣', '墨镜'
+            ];
+            const OUTER_STYLES = ['风衣', '夹克', '大衣', '开衫', '皮夹克', '西装', '工装外套', '小香风', '连帽夹克', '牛仔外套', '派克大衣', '羽绒服', '马甲', '针织外套',
+                '棒球服', '冲锋衣', '雨衣', '披肩', '斗篷', '毛呢外套'
+            ];
+            const SHOE_STYLES = ['帆布鞋', '马丁靴', '尖头鞋', '乐福鞋', '玛丽珍', '短靴', '运动鞋', '凉鞋', '高跟鞋', '平底鞋', '老爹鞋', '穆勒鞋', '牛津鞋',
+                '切尔西靴', '雪地靴', '拖鞋', '草编鞋', '芭蕾鞋', '厚底鞋', '袜靴'
+            ];
+            const BAG_STYLES = ['腋下包', '链条包', '托特包', '水桶包', '斜挎包', '草编包', '双肩包', '手拿包', '腰包', '邮差包', '马鞍包', '贝壳包', '波士顿包',
+                '饺子包', '相机包', '帆布袋', '购物袋', '迷你包', '公文包', '晚宴包'
+            ];
+
+            const SKIRT_STYLES = new Set(['百褶裙', 'A字裙', '半身裙', '小皮裙', '牛仔短裙', '丝绒半裙', '针织长裙', '伞裙', '铅笔裙', '鱼尾裙', '花苞裙', '纱裙']);
+
+            function getEmoji(style, type) {
+                const map = {
+                    top: { '针织衫': '🧶', 'T恤': '🌊', '衬衫': '👔', '卫衣': '🥑', '毛衣': '☁️', '吊带': '🖤', '开衫': '💜',
+                        'POLO衫': '🌾', '高领衫': '🍂', '雪纺衫': '🌿', '蕾丝衫': '🕊️', '背心': '🎽', '打底衫': '☕', '丝绒上衣': '🌲',
+                        '连帽卫衣': '🩶', '泡泡袖上衣': '🎀', '镂空衫': '🤍', '海军衫': '⚓', '薄款毛衣': '🫘', '短款针织': '🌼', '复古衬衫': '🧱',
+                        '印花T恤': '🌸', '条纹上衣': '🦓', '格纹衬衫': '🏴', '牛仔衬衫': '👖', '皮质上衣': '🖤', '珠片上衣': '✨', '羽毛上衣': '🪶',
+                        '荷叶边上衣': '🪷', '灯笼袖上衣': '🏮' },
+                    bottom: { '牛仔裤': '👖', '百褶裙': '👗', '工装裤': '🖤', 'A字裙': '🥻', '西装裤': '👔', '阔腿裤': '🌊', '短裤': '🩳',
+                        '半身裙': '🏴', '休闲裤': '🏖️', '小皮裙': '🖤', '牛仔短裙': '🤍', '工装短裤': '🩶', '灯芯绒裤': '🤎', '运动裤': '🩶',
+                        '丝绒半裙': '🍷', '百慕大短裤': '💙', '针织长裙': '🌾', '微喇裤': '🖤', '破洞牛仔': '💧', '伞裙': '☂️', '铅笔裙': '✏️',
+                        '鱼尾裙': '🐟', '直筒裤': '📏', '烟管裤': '🩻', '喇叭裤': '📣', '骑行裤': '🚴', '连体裤': '👯', '背带裤': '🧑‍🌾',
+                        '花苞裙': '🌷', '纱裙': '🩰' },
+                    acc: { '耳钉': '⭐', '发箍': '🦪', '项链': '🦋', '胸针': '🧸', '发带': '🎀', '耳环': '🌼', '方巾': '🧣', '腰链': '⛓️',
+                        '手链': '📿', '发夹': '🐚', 'choker': '🖤', '戒指': '💍', '手绳': '🧵', '发圈': '🎗️', '眼镜': '👓', '丝巾': '🧣',
+                        '帽子': '🎩', '手套': '🧤', '领带': '👔', '腰带': '🪢', '手镯': '💫', '脚链': '🔗', '头巾': '⛑️', '领结': '🎀',
+                        '胸花': '🌺', '挂饰': '🔮', '手机壳': '📱', '包挂': '🎒', '钥匙扣': '🔑', '墨镜': '😎' },
+                    outer: { '风衣': '🧥', '夹克': '🦺', '大衣': '🧥', '开衫': '🎽', '皮夹克': '🖤', '西装': '🏁', '工装外套': '🪖', '小香风': '🤍',
+                        '连帽夹克': '🩶', '牛仔外套': '👖', '派克大衣': '🧥', '羽绒服': '🪶', '马甲': '🦺', '针织外套': '🧶', '棒球服': '⚾',
+                        '冲锋衣': '🏔️', '雨衣': '☔', '披肩': '🧣', '斗篷': '🧝', '毛呢外套': '🧥' },
+                    shoe: { '帆布鞋': '👟', '马丁靴': '🥾', '尖头鞋': '👠', '乐福鞋': '👞', '玛丽珍': '🥿', '短靴': '👢', '运动鞋': '👟',
+                        '凉鞋': '👡', '高跟鞋': '👠', '平底鞋': '🥿', '老爹鞋': '👟', '穆勒鞋': '👡', '牛津鞋': '👞', '切尔西靴': '🥾',
+                        '雪地靴': '❄️', '拖鞋': '🩴', '草编鞋': '🧺', '芭蕾鞋': '🩰', '厚底鞋': '👠', '袜靴': '🧦' },
+                    bag: { '腋下包': '👜', '链条包': '🖤', '托特包': '🎒', '水桶包': '🤍', '斜挎包': '💚', '草编包': '🧺', '双肩包': '🎒',
+                        '手拿包': '🫴', '腰包': '🦘', '邮差包': '📬', '马鞍包': '🐎', '贝壳包': '🐚', '波士顿包': '🎒', '饺子包': '🥟',
+                        '相机包': '📷', '帆布袋': '🛍️', '购物袋': '🛒', '迷你包': '🤏', '公文包': '💼', '晚宴包': '✨' }
+                };
+                return (map[type] && map[type][style]) || '👗';
+            }
+
+            function getStyleType(style) {
+                const map = {
+                    '针织衫': '温柔',
+                    'T恤': '休闲',
+                    '衬衫': '通勤',
+                    '卫衣': '运动',
+                    '毛衣': '知性',
+                    '吊带': '酷帅',
+                    '开衫': '浪漫',
+                    'POLO衫': '学院',
+                    '高领衫': '复古',
+                    '雪纺衫': '清新',
+                    '蕾丝衫': '精致',
+                    '背心': '休闲',
+                    '打底衫': '温柔',
+                    '丝绒上衣': '精致',
+                    '连帽卫衣': '运动',
+                    '泡泡袖上衣': '甜美',
+                    '镂空衫': '清新',
+                    '海军衫': '学院',
+                    '薄款毛衣': '知性',
+                    '短款针织': '甜美',
+                    '复古衬衫': '复古',
+                    '印花T恤': '元气',
+                    '条纹上衣': '休闲',
+                    '格纹衬衫': '学院',
+                    '牛仔衬衫': '休闲',
+                    '皮质上衣': '酷帅',
+                    '珠片上衣': '闪亮',
+                    '羽毛上衣': '梦幻',
+                    '荷叶边上衣': '浪漫',
+                    '灯笼袖上衣': '甜美',
+                    '牛仔裤': '百搭',
+                    '百褶裙': '甜美',
+                    '工装裤': '酷帅',
+                    'A字裙': '知性',
+                    '西装裤': '通勤',
+                    '阔腿裤': '优雅',
+                    '短裤': '清爽',
+                    '半身裙': '学院',
+                    '休闲裤': '舒适',
+                    '小皮裙': '摩登',
+                    '牛仔短裙': '清爽',
+                    '工装短裤': '运动',
+                    '灯芯绒裤': '复古',
+                    '运动裤': '舒适',
+                    '丝绒半裙': '精致',
+                    '百慕大短裤': '学院',
+                    '针织长裙': '温柔',
+                    '微喇裤': '摩登',
+                    '破洞牛仔': '休闲',
+                    '伞裙': '优雅',
+                    '铅笔裙': '通勤',
+                    '鱼尾裙': '优雅',
+                    '直筒裤': '百搭',
+                    '烟管裤': '通勤',
+                    '喇叭裤': '复古',
+                    '骑行裤': '运动',
+                    '连体裤': '休闲',
+                    '背带裤': '可爱',
+                    '花苞裙': '甜美',
+                    '纱裙': '梦幻',
+                    '耳钉': '闪亮',
+                    '发箍': '优雅',
+                    '项链': '浪漫',
+                    '胸针': '可爱',
+                    '发带': '活力',
+                    '耳环': '清新',
+                    '方巾': '复古',
+                    '腰链': '酷帅',
+                    '手链': '优雅',
+                    '发夹': '复古',
+                    'choker': '精致',
+                    '戒指': '闪亮',
+                    '手绳': '休闲',
+                    '发圈': '温柔',
+                    '眼镜': '知性',
+                    '丝巾': '优雅',
+                    '帽子': '休闲',
+                    '手套': '精致',
+                    '领带': '通勤',
+                    '腰带': '百搭',
+                    '手镯': '闪亮',
+                    '脚链': '浪漫',
+                    '头巾': '复古',
+                    '领结': '精致',
+                    '胸花': '优雅',
+                    '挂饰': '可爱',
+                    '手机壳': '个性',
+                    '包挂': '可爱',
+                    '钥匙扣': '休闲',
+                    '墨镜': '酷帅',
+                    '风衣': '经典',
+                    '夹克': '帅气',
+                    '大衣': '高级',
+                    '开衫': '温柔',
+                    '皮夹克': '酷帅',
+                    '西装': '通勤',
+                    '工装外套': '运动',
+                    '小香风': '精致',
+                    '连帽夹克': '休闲',
+                    '牛仔外套': '帅气',
+                    '派克大衣': '高级',
+                    '羽绒服': '舒适',
+                    '马甲': '休闲',
+                    '针织外套': '温柔',
+                    '棒球服': '运动',
+                    '冲锋衣': '运动',
+                    '雨衣': '功能',
+                    '披肩': '优雅',
+                    '斗篷': '复古',
+                    '毛呢外套': '高级',
+                    '帆布鞋': '休闲',
+                    '马丁靴': '酷帅',
+                    '尖头鞋': '优雅',
+                    '乐福鞋': '学院',
+                    '玛丽珍': '甜美',
+                    '短靴': '知性',
+                    '运动鞋': '运动',
+                    '凉鞋': '清新',
+                    '高跟鞋': '优雅',
+                    '平底鞋': '休闲',
+                    '老爹鞋': '运动',
+                    '穆勒鞋': '休闲',
+                    '牛津鞋': '学院',
+                    '切尔西靴': '酷帅',
+                    '雪地靴': '舒适',
+                    '拖鞋': '休闲',
+                    '草编鞋': '度假',
+                    '芭蕾鞋': '甜美',
+                    '厚底鞋': '个性',
+                    '袜靴': '摩登',
+                    '腋下包': '复古',
+                    '链条包': '摩登',
+                    '托特包': '休闲',
+                    '水桶包': '清新',
+                    '斜挎包': '精致',
+                    '草编包': '度假',
+                    '双肩包': '休闲',
+                    '手拿包': '优雅',
+                    '腰包': '运动',
+                    '邮差包': '学院',
+                    '马鞍包': '复古',
+                    '贝壳包': '精致',
+                    '波士顿包': '通勤',
+                    '饺子包': '休闲',
+                    '相机包': '休闲',
+                    '帆布袋': '休闲',
+                    '购物袋': '休闲',
+                    '迷你包': '精致',
+                    '公文包': '通勤',
+                    '晚宴包': '华丽'
+                };
+                return map[style] || '百搭';
+            }
+
+            function generateItems(count, brandList, styleList, colorList, type) {
+                const items = [];
+                const brandLen = brandList.length;
+                const styleLen = styleList.length;
+                const colorLen = colorList.length;
+                for (let i = 0; i < count; i++) {
+                    const brand = brandList[i % brandLen];
+                    const style = styleList[Math.floor(i / brandLen) % styleLen];
+                    const color = colorList[i % colorLen];
+                    const id = type[0] + (i + 1);
+                    const name = `${brand} ${color}${style}`;
+                    const emoji = getEmoji(style, type);
+                    const styleType = getStyleType(style);
+                    items.push({ id, name, emoji, style: styleType, brand, styleName: style });
+                }
+                return items;
+            }
+
+            const tops = generateItems(400, BRANDS, TOP_STYLES, COLORS, 'top');
+            const bottomsAll = generateItems(400, BRANDS, BOTTOM_STYLES, COLORS, 'bottom');
+            const accessories = generateItems(400, BRANDS, ACC_STYLES, COLORS, 'acc');
+            const outerwears = generateItems(400, BRANDS, OUTER_STYLES, COLORS, 'outer');
+            const shoes = generateItems(400, BRANDS, SHOE_STYLES, COLORS, 'shoe');
+            const bags = generateItems(400, BRANDS, BAG_STYLES, COLORS, 'bag');
+
+            let currentFilter = 'neutral';
+
+            function getFilteredBottoms() {
+                if (currentFilter === 'skirt') {
+                    return bottomsAll.filter(item => SKIRT_STYLES.has(item.styleName));
+                } else if (currentFilter === 'pants') {
+                    return bottomsAll.filter(item => !SKIRT_STYLES.has(item.styleName));
+                }
+                return bottomsAll;
+            }
+
+            function getFilteredCount() {
+                return getFilteredBottoms().length;
+            }
+
+            const categoriesDef = [
+                { cat: 'top', icon: '🧥', label: '上衣', items: tops },
+                { cat: 'bottom', icon: '👖', label: '下衣', items: bottomsAll, dynamic: true },
+                { cat: 'acc', icon: '✨', label: '配饰', items: accessories },
+                { cat: 'outer', icon: '🧥', label: '外套', items: outerwears },
+                { cat: 'shoe', icon: '👟', label: '鞋子', items: shoes },
+                { cat: 'bag', icon: '👜', label: '包包', items: bags }
+            ];
+
+            let selTop = null,
+                selBottom = null,
+                selAcc = null,
+                selOuter = null,
+                selShoe = null,
+                selBag = null;
+            let favorites = [],
+                todayCount = 0,
+                _lastComplete = false;
+            const expanded = new Set();
+
+            try {
+                const sf = JSON.parse(localStorage.getItem('wd_favs5') || '[]');
+                if (Array.isArray(sf)) favorites = sf;
+                const st = parseInt(localStorage.getItem('wd_today5') || '0');
+                if (!isNaN(st)) todayCount = st;
+                const ld = localStorage.getItem('wd_date5');
+                const ts = new Date().toDateString();
+                if (ld !== ts) { todayCount = 0;
+                    localStorage.setItem('wd_today5', '0');
+                    localStorage.setItem('wd_date5', ts); }
+            } catch (e) { favorites = [];
+                todayCount = 0; }
+
+            function persist() {
+                try {
+                    localStorage.setItem('wd_favs5', JSON.stringify(favorites));
+                    localStorage.setItem('wd_today5', todayCount.toString());
+                    localStorage.setItem('wd_date5', new Date().toDateString());
+                } catch (e) {}
+            }
+
+            const wardrobeBody = document.getElementById('wardrobeBody');
+            const outfitPreview = document.getElementById('outfitPreview');
+            const descriptionBox = document.getElementById('descriptionBox');
+            const favList = document.getElementById('favList');
+            const favNum = document.getElementById('favNum');
+            const favCountLabel = document.getElementById('favCountLabel');
+            const todayNum = document.getElementById('todayNum');
+            const toastMini = document.getElementById('toastMini');
+            const btnSave = document.getElementById('btnSave');
+            const filterBar = document.getElementById('filterBar');
+            const copyBtn = document.getElementById('copyBtn');
+
+            window.setFilter = function(filter) {
+                if (currentFilter === filter) return;
+                currentFilter = filter;
+                const tags = filterBar.querySelectorAll('.filter-tag');
+                tags.forEach(t => {
+                    t.classList.toggle('active', t.dataset.filter === filter);
+                });
+                const filtered = getFilteredBottoms();
+                if (selBottom && !filtered.some(b => b.id === selBottom.id)) {
+                    selBottom = null;
+                }
+                if (expanded.has('bottom')) {
+                    const container = document.getElementById('items-bottom');
+                    if (container) fillCategoryItems('bottom', container);
+                }
+                updateBottomCount();
+                updatePreview();
+                generateDescription();
+                const filterLabels = { neutral: '中性·全部下衣', skirt: '裙装·仅裙子', pants: '裤装·仅裤子' };
+                showToast('🔍', filterLabels[filter] || '筛选已更新');
+            };
+
+            function updateBottomCount() {
+                const countEl = document.querySelector('.category[data-cat="bottom"] .cat-count');
+                if (countEl) {
+                    countEl.textContent = getFilteredCount() + '件';
+                }
+            }
+
+            function renderWardrobeBody() {
+                let html = '';
+                categoriesDef.forEach(catDef => {
+                    const isOpen = expanded.has(catDef.cat);
+                    const displayCount = catDef.dynamic ? getFilteredCount() : catDef.items.length;
+                    html += `<div class="category" data-cat="${catDef.cat}">
+                <div class="category-header${isOpen?' open':''}" onclick="toggleCategory('${catDef.cat}')">
+                    <span class="cat-icon">${catDef.icon}</span>${catDef.label}
+                    <span class="cat-count">${displayCount}件</span>
+                    <span class="arrow">▶</span>
+                </div>
+                <div class="items-container${isOpen?' open':''}" id="items-${catDef.cat}" data-cat="${catDef.cat}"></div>
+              </div>`;
+                });
+                wardrobeBody.innerHTML = html;
+                expanded.forEach(catKey => {
+                    const container = document.getElementById('items-' + catKey);
+                    if (container) fillCategoryItems(catKey, container);
+                });
+            }
+
+            function fillCategoryItems(catKey, container) {
+                const catDef = categoriesDef.find(c => c.cat === catKey);
+                if (!catDef) return;
+                const selMap = { top: selTop, bottom: selBottom, acc: selAcc, outer: selOuter, shoe: selShoe,
+                    bag: selBag };
+                const curSel = selMap[catKey];
+                let items = catDef.items;
+                if (catDef.dynamic) {
+                    items = getFilteredBottoms();
+                }
+                let btns = '';
+                items.forEach(item => {
+                    const selClass = (curSel && curSel.id === item.id) ? ' selected' : '';
+                    btns +=
+                        `<button class="item-chip${selClass}" data-cat="${catKey}" data-id="${item.id}" onclick="selectItem('${catKey}','${item.id}')">${item.emoji} ${item.name}<span class="check-dot">✓</span></button>`;
+                });
+                container.innerHTML = btns;
+            }
+
+            window.toggleCategory = function(catKey) {
+                if (expanded.has(catKey)) {
+                    expanded.delete(catKey);
+                    const container = document.getElementById('items-' + catKey);
+                    if (container) { container.innerHTML = '';
+                        container.classList.remove('open'); }
+                    const header = document.querySelector(`.category[data-cat="${catKey}"] .category-header`);
+                    if (header) header.classList.remove('open');
+                } else {
+                    expanded.add(catKey);
+                    const container = document.getElementById('items-' + catKey);
+                    if (container) {
+                        container.classList.add('open');
+                        fillCategoryItems(catKey, container);
+                    }
+                    const header = document.querySelector(`.category[data-cat="${catKey}"] .category-header`);
+                    if (header) header.classList.add('open');
+                }
+            };
+
+            window.selectItem = function(cat, id) {
+                const maps = { top: tops, bottom: bottomsAll, acc: accessories, outer: outerwears, shoe: shoes,
+                bag: bags };
+                const found = maps[cat].find(x => x.id === id);
+                const refs = { top: 'selTop', bottom: 'selBottom', acc: 'selAcc', outer: 'selOuter', shoe: 'selShoe',
+                    bag: 'selBag' };
+                const key = refs[cat];
+                const cur = eval(key);
+                if (cur && cur.id === id) { eval(key + '=null'); } else { eval(key + '=found'); }
+                if (!expanded.has(cat)) {
+                    toggleCategory(cat);
+                } else {
+                    const container = document.getElementById('items-' + cat);
+                    if (container) fillCategoryItems(cat, container);
+                }
+                updatePreview();
+                generateDescription();
+            };
+
+            function generateDescription() {
+                const db = descriptionBox;
+                if (!selTop || !selBottom || !selAcc) {
+                    db.innerHTML =
+                        '<span class="desc-empty">选择上衣、下衣和配饰后，这里会出现一段搭配描写</span><button class="copy-btn" id="copyBtn" onclick="copyDescription()" title="复制搭配描写">📋</button>';
+                    return;
+                }
+                const styleWords = {
+                    '温柔': ['温婉可人', '柔情似水', '恬静优雅'],
+                    '休闲': ['轻松自在', '随性洒脱', '慵懒舒适'],
+                    '甜美': ['甜度满分', '少女感十足', '软糯可爱'],
+                    '运动': ['活力四射', '动感十足'],
+                    '知性': ['知性大方', '干练利落'],
+                    '酷帅': ['酷感十足', '帅气逼人'],
+                    '浪漫': ['浪漫迷人', '优雅梦幻'],
+                    '学院': ['学院气息', '乖巧伶俐'],
+                    '复古': ['复古韵味', '经典隽永'],
+                    '清新': ['清新自然', '干净纯粹'],
+                    '元气': ['元气满满', '活泼开朗'],
+                    '精致': ['精致细腻', '考究典雅'],
+                    '百搭': ['日常百搭', '经典不过时'],
+                    '通勤': ['职场干练', '利落得体'],
+                    '优雅': ['优雅端庄', '气质出众'],
+                    '清爽': ['清爽利落', '夏日气息'],
+                    '舒适': ['舒适随性', '自在舒展'],
+                    '摩登': ['摩登时髦', '现代都市'],
+                    '闪亮': ['闪耀动人', '点亮整体'],
+                    '可爱': ['俏皮可爱', '灵动俏皮'],
+                    '活力': ['充满活力', '生机勃勃'],
+                    '梦幻': ['梦幻迷离', '仙气飘飘'],
+                    '经典': ['经典永恒', '永不过时'],
+                    '帅气': ['帅气利落', '英姿飒爽'],
+                    '高级': ['高级质感', '低调奢华'],
+                    '度假': ['度假风情', '悠闲惬意']
+                };
+
+                function pick(s) { const a = styleWords[s] || [s]; return a[Math.floor(Math.random() * a.length)]; }
+                const ts = pick(selTop.style),
+                    bs = pick(selBottom.style),
+                    as = pick(selAcc.style);
+                const scenes = ['日常出行', '周末约会', '好友聚会', '逛街购物', '咖啡馆小坐', '上班通勤', '校园生活', '户外郊游', '晚宴派对', '轻松下午茶', '美术馆看展',
+                    '海边漫步'
+                ];
+                const scene = scenes[Math.floor(Math.random() * scenes.length)];
+                let desc = `你穿上了${selTop.name}，`;
+                if (selOuter) desc += `外搭${selOuter.name}，`;
+                desc += `下身搭配${selBottom.name}，点缀${selAcc.name}。`;
+                if (selShoe) desc += `脚踩${selShoe.name}，`;
+                if (selBag) desc += `手拎${selBag.name}，`;
+                desc +=
+                    `整体风格${ts}，又带着${bs}的气息，${as}的细节让造型更加出彩。非常适合${scene}。`;
+                const extras = ['这套搭配舒适又时髦，展现了你独特的品味。', '色彩与款式的平衡恰到好处，充满高级感。', '举手投足间都散发着自信的魅力。', '简约而不简单，每个单品都相得益彰。',
+                    '低调中透着精致，日常穿着再合适不过。'
+                ];
+                desc += ' ' + extras[Math.floor(Math.random() * extras.length)];
+                db.innerHTML =
+                    `<span class="desc-text">${desc}</span><button class="copy-btn" id="copyBtn" onclick="copyDescription()" title="复制搭配描写">📋</button>`;
+            }
+
+            // 复制功能
+            window.copyDescription = function() {
+                const descText = document.querySelector('.desc-text');
+                if (!descText) {
+                    showToast('📋', '还没有搭配描写可复制');
+                    return;
+                }
+                const text = descText.textContent || descText.innerText;
+                if (!text || text.trim() === '') {
+                    showToast('📋', '还没有搭配描写可复制');
+                    return;
+                }
+                // 使用 Clipboard API
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showCopySuccess();
+                    }).catch(() => {
+                        fallbackCopy(text);
+                    });
+                } else {
+                    fallbackCopy(text);
+                }
+            };
+
+            function fallbackCopy(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showCopySuccess();
+                } catch (e) {
+                    showToast('⚠️', '复制失败，请手动复制');
+                }
+                document.body.removeChild(textarea);
+            }
+
+            function showCopySuccess() {
+                const btn = document.getElementById('copyBtn');
+                if (btn) {
+                    btn.classList.add('copied');
+                    btn.innerHTML = '✓';
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                        btn.innerHTML = '📋';
+                    }, 1200);
+                }
+                showToast('✅', '搭配描写已复制！');
+            }
+
+            function updatePreview() {
+                const has = selTop || selBottom || selAcc || selOuter || selShoe || selBag;
+                outfitPreview.innerHTML = '';
+                if (!has) {
+                    outfitPreview.classList.remove('complete');
+                    outfitPreview.innerHTML = '<span class="outfit-hint">点击下方分类展开挑选单品</span>';
+                    descriptionBox.innerHTML =
+                        '<span class="desc-empty">选择上衣、下衣和配饰后，这里会出现一段搭配描写</span><button class="copy-btn" id="copyBtn" onclick="copyDescription()" title="复制搭配描写">📋</button>';
+                    _lastComplete = false;
+                } else {
+                    const complete = selTop && selBottom && selAcc;
+                    outfitPreview.classList.toggle('complete', complete);
+                    const row = document.createElement('div');
+                    row.className = 'outfit-row';
+                    const pieces = [];
+                    if (selTop) pieces.push({ ...selTop, cls: 'tag-top' });
+                    if (selBottom) pieces.push({ ...selBottom, cls: 'tag-bottom' });
+                    if (selAcc) pieces.push({ ...selAcc, cls: 'tag-acc' });
+                    if (selOuter) pieces.push({ ...selOuter, cls: 'tag-top' });
+                    if (selShoe) pieces.push({ ...selShoe, cls: 'tag-bottom' });
+                    if (selBag) pieces.push({ ...selBag, cls: 'tag-acc' });
+                    pieces.forEach((p, i) => {
+                        if (i > 0) { const pl = document.createElement('span');
+                            pl.className = 'outfit-plus';
+                            pl.textContent = '+';
+                            row.appendChild(pl); }
+                        const tag = document.createElement('span');
+                        tag.className = `outfit-tag ${p.cls}`;
+                        tag.textContent = `${p.emoji} ${p.name}`;
+                        row.appendChild(tag);
+                    });
+                    outfitPreview.appendChild(row);
+                    if (complete) {
+                        const badge = document.createElement('span');
+                        badge.className = 'outfit-badge';
+                        badge.textContent = '完美搭配';
+                        outfitPreview.appendChild(badge);
+                        if (!_lastComplete) { todayCount++;
+                            persist();
+                            updateStats(); }
+                        _lastComplete = true;
+                    } else { _lastComplete = false; }
+                    generateDescription();
+                }
+                updateStats();
+            }
+
+            function updateStats() {
+                favNum.textContent = favorites.length;
+                favCountLabel.textContent = `(${favorites.length}套)`;
+                todayNum.textContent = todayCount;
+            }
+
+            window.shuffleOutfit = function() {
+                selTop = tops[Math.floor(Math.random() * tops.length)];
+                const filteredBottoms = getFilteredBottoms();
+                selBottom = filteredBottoms[Math.floor(Math.random() * filteredBottoms.length)];
+                selAcc = accessories[Math.floor(Math.random() * accessories.length)];
+                selOuter = Math.random() < 0.3 ? outerwears[Math.floor(Math.random() * outerwears.length)] : null;
+                selShoe = Math.random() < 0.35 ? shoes[Math.floor(Math.random() * shoes.length)] : null;
+                selBag = Math.random() < 0.3 ? bags[Math.floor(Math.random() * bags.length)] : null;
+                ['top', 'bottom', 'acc'].forEach(c => { if (!expanded.has(c)) toggleCategory(c); });
+                updatePreview();
+                generateDescription();
+                todayCount++;
+                persist();
+                updateStats();
+                const filterLabel = currentFilter === 'skirt' ? '裙装' : currentFilter === 'pants' ? '裤装' : '全部';
+                showToast('🎲', `摇出一套${filterLabel}搭配！`);
+            };
+
+            window.saveFav = function() {
+                if (!selTop || !selBottom || !selAcc) { showToast('😅', '请先选齐上衣+下衣+配饰'); return; }
+                const combo = { top: { ...selTop }, bottom: { ...selBottom }, acc: { ...selAcc }, outer: selOuter ? { ...
+                        selOuter } : null, shoe: selShoe ? { ...selShoe } : null, bag: selBag ? { ...selBag } :
+                        null, time: new Date().toLocaleString() };
+                const dup = favorites.some(f => f.top.id === combo.top.id && f.bottom.id === combo.bottom.id && f
+                    .acc.id === combo.acc.id);
+                if (dup) { showToast('💡', '这套已经收藏过啦'); return; }
+                favorites.unshift(combo);
+                if (favorites.length > 40) favorites = favorites.slice(0, 40);
+                persist();
+                renderFavs();
+                updateStats();
+                showToast('💖', '收藏成功！');
+                btnSave.classList.add('btn-heart-pop');
+                setTimeout(() => btnSave.classList.remove('btn-heart-pop'), 500);
+            };
+
+            window.clearAll = function() {
+                selTop = selBottom = selAcc = selOuter = selShoe = selBag = null;
+                _lastComplete = false;
+                updatePreview();
+                generateDescription();
+                showToast('🔄', '已清空');
+            };
+
+            function renderFavs() {
+                favList.innerHTML = '';
+                if (favorites.length === 0) { favList.innerHTML = '<span class="no-fav">还没有收藏搭配哦</span>'; } else {
+                    favorites.forEach((fav, idx) => {
+                        const chip = document.createElement('span');
+                        chip.className = 'fav-chip';
+                        const s =
+                            `${fav.top.emoji}${fav.top.name}+${fav.bottom.emoji}${fav.bottom.name}+${fav.acc.emoji}${fav.acc.name}`;
+                        chip.innerHTML =
+                        `<span>${s}</span><span class="fav-del" data-idx="${idx}">x</span>`;
+                        chip.addEventListener('click', function(e) {
+                            if (e.target.classList.contains('fav-del')) { e.stopPropagation();
+                                favorites.splice(parseInt(e.target.dataset.idx), 1);
+                                persist();
+                                renderFavs();
+                                updateStats();
+                                showToast('🗑️', '已移除'); return; }
+                            selTop = fav.top;
+                            selBottom = fav.bottom;
+                            selAcc = fav.acc;
+                            selOuter = fav.outer || null;
+                            selShoe = fav.shoe || null;
+                            selBag = fav.bag || null;
+                            ['top', 'bottom', 'acc'].forEach(c => { if (!expanded.has(c))
+                            toggleCategory(c); });
+                            updatePreview();
+                            generateDescription();
+                            showToast('👗', '已加载收藏搭配');
+                        });
+                        favList.appendChild(chip);
+                    });
+                }
+                updateStats();
+            }
+
+            let tt;
+
+            function showToast(e, m) { clearTimeout(tt);
+                toastMini.innerHTML = `${e} ${m}`;
+                toastMini.classList.add('show');
+                tt = setTimeout(() => toastMini.classList.remove('show'), 1800); }
+
+            function handleKey(e) { if (e.key === 'r' || e.key === 'R') { e.preventDefault();
+                    shuffleOutfit(); } else if (e.key === 's' || e.key === 'S') { e.preventDefault();
+                    saveFav(); } else if (e.key === 'c' || e.key === 'C') { e.preventDefault();
+                    copyDescription(); } }
+
+            function init() {
+                renderWardrobeBody();
+                updateBottomCount();
+                updatePreview();
+                generateDescription();
+                renderFavs();
+                updateStats();
+                document.addEventListener('keydown', handleKey);
+                console.log('品牌衣橱就绪 | 2400件单品 | 裙装/裤装/中性筛选');
+                console.log('复制快捷键: C 键');
+                console.log('裙装款式:', [...SKIRT_STYLES].join('、'));
+                console.log('裙装单品数:', bottomsAll.filter(b => SKIRT_STYLES.has(b.styleName)).length, '件');
+                console.log('裤装单品数:', bottomsAll.filter(b => !SKIRT_STYLES.has(b.styleName)).length, '件');
+            }
+            init();
+        })();
+    </script>
+</body>
+</html>
